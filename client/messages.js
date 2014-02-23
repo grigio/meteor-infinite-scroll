@@ -6,7 +6,7 @@ Template.messages.allMessages = function (argument) {
 Template.messages.events = {
   'click    .js-filter button': handleFilter,
   'click    .js-loadMore button': function () {
-    loadMore(true);
+    loadMore({force: true});
   },
   'keypress .js-filter input': function (ev) {
     if (ev.charCode === 13){
@@ -30,19 +30,20 @@ function handleFilter() {
   Session.set('query', query);
 }
 
-function loadMore(force) {
-  var force = force || false;
+function loadMore(opts) {
+  var force = opts.force || false;
   var threshold, target = $('body');
   if (!target.length) return;
 
   threshold = $(window).scrollTop() + $(window).height() - target.height();
 
   // HACK: see http://www.meteorpedia.com/read/Infinite_Scrolling
-  if (target.offset().top < threshold || force) {
+  if (force || target.offset().top < threshold+1 && threshold < 2) {
+    console.log("OFF:"+ target.offset().top +" TR:"+  threshold +" ST:"+$(window).scrollTop() +" WH:"+ $(window).height());
     var query = Session.get('query');
     console.log(query);
     Session.set('query', { filterTitle:query.filterTitle ,page:query.page+1})
-  }     
+  }
 }
 
 // init
