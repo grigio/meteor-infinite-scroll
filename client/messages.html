@@ -1,0 +1,28 @@
+<head>
+  <title>Meteor Infinite Scroll Test</title>
+</head>
+
+<body>
+  <div class="container">
+    {{> messages}}
+  </div>
+</body>
+
+<template name="messages">
+  <h1>Infinite scroll test + filter on Meteor 1.0.x</h1>
+  <p>Currently it works better on a non-touchscreen device, <a href="https://github.com/grigio/meteor-infinite-scroll">source</a></p>
+
+  <div class="js-filter form-group">
+    <input type="text" class="form-control" placeholder="ex. 'message 4'">
+    <button  class="btn"
+                style="margin-top: -10px; margin-left: -4px;">Filter</button>
+  </div>
+
+  {{#each allMessages}}
+    <h2></h2>
+    <div class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{ title }}
+    </div>
+  {{/each}}
+</template>
