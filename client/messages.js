@@ -5,6 +5,9 @@ Template.messages.allMessages = function (argument) {
 // User events
 Template.messages.events = {
   'click    .js-filter button': handleFilter,
+  'click    .js-loadMore button': function () {
+    loadMore(true);
+  },
   'keypress .js-filter input': function (ev) {
     if (ev.charCode === 13){
       handleFilter();
@@ -27,26 +30,19 @@ function handleFilter() {
   Session.set('query', query);
 }
 
-function loadMore() {
+function loadMore(force) {
+  var force = force || false;
   var threshold, target = $('body');
   if (!target.length) return;
 
-  var threshold = $(window).scrollTop() + $(window).height() - target.height();
+  threshold = $(window).scrollTop() + $(window).height() - target.height();
 
-  if (target.offset().top < threshold) {
-      if (!target.data('visible')) {
-          // console.log('target became visible (inside viewable area)');
-          var query = Session.get('query');
-          Session.set('query', { filterTitle:query.filterTitle ,page:query.page+1})
-
-          target.data('visible', true);
-      }
-  } else {
-      if (target.data('visible')) {
-          // console.log('target became invisible (below viewable arae)');
-          target.data('visible', false);
-      }
-  }        
+  // HACK: see http://www.meteorpedia.com/read/Infinite_Scrolling
+  if (target.offset().top < threshold || force) {
+    var query = Session.get('query');
+    console.log(query);
+    Session.set('query', { filterTitle:query.filterTitle ,page:query.page+1})
+  }     
 }
 
 // init
