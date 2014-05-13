@@ -1,3 +1,7 @@
-`meteor --release shark-1-29-2014-e` or meteor 1.x
+## Usage
+Install Meteor JS (tested with 0.8.1.1) an run:
+```
+meteor
+```
 
 Live at http://infinite-scroll.meteor.com
